@@ -192,4 +192,4 @@ const reduce = function (nums, fn, init) {
 };
 
 const value = reduce([1, 2, 3, 4], sum, 100);
-console.log(value);
+// console.log(value);
