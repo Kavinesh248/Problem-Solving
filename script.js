@@ -263,5 +263,5 @@ var once = function (fn) {
 };
 
 const onceFn = once((a, b, c) => a + b + c);
-console.log(onceFn(1, 2, 3));
-console.log(onceFn(1, 2, 3));
+// console.log(onceFn(1, 2, 3));
+// console.log(onceFn(1, 2, 3));
