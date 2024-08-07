@@ -193,3 +193,75 @@ const reduce = function (nums, fn, init) {
 
 const value = reduce([1, 2, 3, 4], sum, 100);
 // console.log(value);
+
+/*
+
+  Function composition
+
+  Given an array of functions [f1, f2, f3, ..., fn], 
+  return a new function fn that is the function composition of the array of functions.
+
+  The function composition of [f(x), g(x), h(x)] 
+  is fn(x) = f(g(h(x))).
+
+  The function composition of an empty list of 
+  functions is the identity function f(x) = x.
+
+  You may assume each function in the array accepts one integer as 
+  input and returns one integer as output.
+
+*/
+//Not completed by me -> i've seen the solution (damn waste of trying this)
+var compose = function (functions) {
+  if (functions.length === 0) {
+    return function (x) {
+      return x;
+    };
+  }
+
+  return functions.reduceRight((prevFn, nextFn) => {
+    return function (x) {
+      return nextFn(prevFn(x));
+    };
+  });
+};
+
+const functions = [(x) => x + 1, (x) => x * x, (x) => 2 * x];
+const returned = compose(functions);
+// console.log(returned(4));
+
+/* Write a function argumentsLength that returns the count of arguments passed to it. */
+
+const argumentsLength = function (...args) {
+  return args.length;
+};
+
+// console.log(argumentsLength(3, 4, 5));
+
+/*
+
+Given a function fn, return a new function that is identical to the 
+original function except that it ensures fn is called at most once.
+
+The first time the returned function is called, it should return
+the same result as fn.
+
+Every subsequent time it is called, 
+it should return undefined.
+
+*/
+
+var once = function (fn) {
+  let call = 1; //Truthy value
+
+  return function (...args) {
+    if (call) {
+      call = 0; //Falsy value
+      return fn(...args);
+    }
+  };
+};
+
+const onceFn = once((a, b, c) => a + b + c);
+console.log(onceFn(1, 2, 3));
+console.log(onceFn(1, 2, 3));
