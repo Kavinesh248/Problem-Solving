@@ -265,3 +265,48 @@ var once = function (fn) {
 const onceFn = once((a, b, c) => a + b + c);
 // console.log(onceFn(1, 2, 3));
 // console.log(onceFn(1, 2, 3));
+
+// const memoize = function (fn) {
+//   let call = 0;
+//   let cachedValue;
+//   return function (...args) {
+//     const cachedArgs = args;
+//     cachedValue = fn(...args);
+//     if (!args.length > 0) return (call += 1);
+//     if (args === cachedArgs) return cachedValue;
+//   };
+// };
+// const sumNum = (a, b) => a + b;
+// const fib = (n) => (n <= 1 ? 1 : n - 1 + (n - 2));
+// const factorial = (n) => (n <= 1 ? 1 : n * factorial(n - 1));
+
+// const memoizeSum = memoize(sumNum);
+// console.log(memoizeSum(2, 2));
+// console.log(memoizeSum(2, 2));
+// console.log(memoizeSum());
+// console.log(memoizeSum(1, 2));
+// console.log(memoizeSum());
+
+function memoize(fn) {
+  const cache = {};
+
+  return function (...args) {
+    const key = args;
+
+    const result = fn(...args);
+    cache[key] = result;
+
+    if (key in cache) {
+      return cache[key];
+    }
+
+    return result;
+  };
+}
+
+const memoizedSum = memoize(function (a, b) {
+  return a + b;
+});
+
+console.log(memoizedSum(2, 3)); // Output: Computing sum, 5
+console.log(memoizedSum(2, 3)); // Output: 5
