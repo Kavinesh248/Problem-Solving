@@ -266,6 +266,24 @@ const onceFn = once((a, b, c) => a + b + c);
 // console.log(onceFn(1, 2, 3));
 // console.log(onceFn(1, 2, 3));
 
+/*
+
+ Given a function fn, return a memoized version of that function.
+
+A memoized function is a function that will never be called twice with the same inputs.
+ Instead it will return a cached value.
+
+You can assume there are 3 possible input functions: sum, fib, and factorial.
+
+sum accepts two integers a and b and returns a + b. Assume that if a value has 
+already been cached for the arguments (b, a) where a != b, it cannot be used for 
+the arguments (a, b). For example, if the arguments are (3, 2) and (2, 3), two separate calls 
+should be made.
+fib accepts a single integer n and returns 1 if n <= 1 or fib(n - 1) + fib(n - 2) otherwise.
+factorial accepts a single integer n and returns 1 if n <= 1 or factorial(n - 1) * n otherwise.
+
+*/
+
 // const memoize = function (fn) {
 //   let call = 0;
 //   let cachedValue;
@@ -308,5 +326,49 @@ const memoizedSum = memoize(function (a, b) {
   return a + b;
 });
 
-console.log(memoizedSum(2, 3)); // Output: Computing sum, 5
-console.log(memoizedSum(2, 3)); // Output: 5
+// console.log(memoizedSum(2, 3)); // Output: Computing sum, 5
+// console.log(memoizedSum(2, 3)); // Output: 5
+
+/*
+
+Given two promises promise1 and promise2, return a new promise. 
+promise1 and promise2 will both resolve with a number. 
+The returned promise should resolve with the sum of the two numbers.
+ 
+
+Example 1:
+
+Input: 
+promise1 = new Promise(resolve => setTimeout(() => resolve(2), 20)), 
+promise2 = new Promise(resolve => setTimeout(() => resolve(5), 60))
+Output: 7
+Explanation: The two input promises resolve with the values of 2 and 5 respectively. 
+The returned promise should resolve with a value of 2 + 5 = 7. The time the returned promise 
+resolves is not judged for this problem.
+
+*/
+
+const addTwoPromises = async function (promise1, promise2) {
+  return Promise.resolve((await promise1) + (await promise2));
+};
+
+// addTwoPromises(Promise.resolve(1), Promise.resolve(2)).then(console.log);
+
+/*
+
+Given a positive integer millis, write an asynchronous function that sleeps
+for [millis] milliseconds. It can resolve any value.
+
+*/
+
+const sleep = async function (millis) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, millis);
+  });
+};
+let t = Date.now();
+sleep(4000).then(() => {
+  console.log(Date.now() - t); // 100
+});
