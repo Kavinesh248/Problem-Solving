@@ -368,7 +368,66 @@ const sleep = async function (millis) {
     }, millis);
   });
 };
-let t = Date.now();
-sleep(4000).then(() => {
-  console.log(Date.now() - t); // 100
-});
+// let t = Date.now();
+// sleep(4000).then(() => {
+//   console.log(Date.now() - t); // 100
+// });
+
+/*
+
+Given a function fn, an array of arguments args, and a timeout t in milliseconds, 
+return a cancel function cancelFn.
+
+After a delay of cancelTimeMs, the returned cancel function 
+cancelFn will be invoked.
+
+setTimeout(cancelFn, cancelTimeMs)
+Initially, the execution of the function fn should be
+ delayed by t milliseconds.
+
+If, before the delay of t milliseconds, the function cancelFn is invoked, it should cancel 
+the delayed execution of fn. Otherwise, if cancelFn is not invoked within the specified delay 
+t, fn should be executed with the provided args as arguments.
+
+*/
+
+const cancellableTimeout = function (fn, args, t) {
+  const timeout = setInterval(() => {
+    console.log(fn(...args));
+  }, t);
+
+  return function () {
+    clearInterval(timeout);
+  };
+};
+
+// const cancelTimeMs = 1900;
+// const canceFn = cancellable((x) => x * 2, [4], 500);
+// setTimeout(canceFn, cancelTimeMs);
+
+/*
+
+Given a function fn, an array of arguments args, and an interval time t, 
+return a cancel function cancelFn.
+
+After a delay of cancelTimeMs, the returned cancel 
+function cancelFn will be invoked.
+
+setTimeout(cancelFn, cancelTimeMs)
+The function fn should be called with args immediately and
+ then called again every t milliseconds until cancelFn 
+is called at cancelTimeMs ms.
+
+*/
+
+var cancellableInterval = function (fn, args, t) {
+  const timeout = function () {
+    fn(...args);
+  };
+  timeout();
+  setInterval(timeout, t);
+
+  return function () {
+    clearInterval(timeout);
+  };
+};
