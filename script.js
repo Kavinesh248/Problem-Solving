@@ -431,3 +431,52 @@ var cancellableInterval = function (fn, args, t) {
     clearInterval(timeout);
   };
 };
+
+/*
+
+Promise Time Limit
+
+    Given an asynchronous function fn and a time t in milliseconds,
+    return a new time limited version of the input function. 
+    fn takes arguments provided to the time limited function.
+
+    The time limited function should follow these rules:
+
+    If the fn completes within the time limit of t milliseconds, 
+    the time limited function should resolve with the result.
+    If the execution of the fn exceeds the time limit, the time 
+    limited function should reject with the string "Time Limit Exceeded".
+
+*/
+
+// const timeLimit = function (fn, t) {
+//   return async function (...args) {
+//     const res = await fn(...args);
+//     if (res) return await new Promise((resolve) => setTimeout(resolve(res), t));
+//     else
+//       return setTimeout(() => {
+//         Promise.reject("Time Limit Exceeded");
+//       }, t);
+//   };
+// };
+
+// some = async (n) => {
+//   await new Promise((res) => setTimeout(res, 1000));
+//   return n * n;
+// };
+
+// const limited = timeLimit(some, 1500);
+// limited(6).then(console.log).catch(console.error);
+
+var timeLimit = function (fn, t) {
+  return async function (...args) {
+    const res = fn(...args);
+    const timeout = new Promise((_, reject) => {
+      setTimeout(() => {
+        reject("Time Limit Exceeded");
+      });
+    });
+
+    return Promise.race([res, timeout]);
+  };
+};
